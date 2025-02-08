@@ -54,7 +54,24 @@ function solveSudoku() {
         showPopup("This Sudoku board is invalid. Ensure no duplicates exist in any row, column, or 3×3 box.");
         return;
     }
-    // flask code rakhnu prne
+    
+    let board = Array.from({ length: 9 }, () => Array(9).fill("0"));
+
+    document.querySelectorAll(".tile").forEach((tile, index) => {
+        let row = Math.floor(index / 9);
+        let col = index % 9;
+        board[row][col] = tile.textContent || "0"; 
+    });
+
+    //console.log(board);
+
+    fetch("/solve", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ board: board })
+    });
 }
 
 function isValidBoard() {
