@@ -13,7 +13,7 @@ def printBoard(board):
                 print(str(board[i][j]) + " ", end="")
 
 def countEmpty(board):
-    printBoard(board)
+    #printBoard(board)
     rowEmpty = [0] * 9
     colEmpty = [0] * 9
     gridEmpty = [[0] * 3 for _ in range(3)]

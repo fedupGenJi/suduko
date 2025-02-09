@@ -63,6 +63,11 @@ function solveSudoku() {
         board[row][col] = tile.textContent || "0"; 
     });
 
+    let solveButton = document.getElementById("solvex");
+    let clearButton = document.getElementById("clearx");
+    solveButton.disabled = true;
+    clearButton.disabled = true;
+
     //console.log(board);
 
     fetch("/solve", {
@@ -71,6 +76,21 @@ function solveSudoku() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({ board: board })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            setTimeout(() => {
+                updateBoard(data.board);
+            }, 2000);
+            
+        } else {
+            showPopup(data.message || "Something went wrong while solving.");
+        }
+    })
+    .finally(() => {
+        solveButton.disabled = false;
+        clearButton.disabled = false;
     });
 }
 
@@ -123,7 +143,14 @@ function showPopup(message) {
     document.body.appendChild(popup);
 }
 
-
 function closePopup() {
     document.querySelector(".popup").remove();
+}
+
+function updateBoard(solvedBoard) {
+    document.querySelectorAll(".tile").forEach((tile, index) => {
+        let row = Math.floor(index / 9);
+        let col = index % 9;
+        tile.textContent = solvedBoard[row][col];
+    });
 }
