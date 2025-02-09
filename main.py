@@ -16,6 +16,7 @@ def solveSudoku():
     data = request.get_json()
     board = data.get("board", [])
     printBoard(board)
+    emptyBoxes = countEmpty(board)
 
 if __name__ == '__main__':
     sudukoSolver.run(host=ip_address, port=1001, debug=False)
