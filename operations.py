@@ -20,8 +20,8 @@ def countEmpty(board):
     
     emptyPositions = []
     
-    for r in range(9):
-        for c in range(9):
+    for r in range(len(board)):
+        for c in range(len(board[0])):
             if int(board[r][c]) == 0:  #the board was being sent as a string from the js
                 rowEmpty[r] += 1
                 colEmpty[c] += 1
@@ -39,3 +39,43 @@ def countEmpty(board):
     #print("Sorted empty positions:", emptyPositions)
     
     return emptyPositions
+
+def valid(board, number, position):
+    number = str(number)
+
+    #check row
+    for i in range(len(board[0])):
+        if board[position[0]][i] == number and position[1] != i:
+            return False
+    
+    #check column
+    for i in range(len(board)):
+        if board[i][position[1]] == number and position[0] != i:
+            return False
+        
+    #check 3*3 box
+    box_x = position[1] // 3
+    box_y = position[0] // 3
+
+    for i in range(box_y*3, box_y*3+3):
+        for j in range(box_x*3, box_x*3+3):
+            if board[i][j] == number and (i,j) != position:
+                return False
+    
+    return True
+
+def solver(board, emptyBoxes):
+    if not emptyBoxes:
+        return True
+    
+    find = emptyBoxes[0]
+    row, col = find
+            
+    for j in range(1,10):
+        if valid(board, j, (row,col)):
+            board[row][col] = str(j)
+            if solver(board, emptyBoxes[1:]): #slices the first element
+                return True
+            board[row][col] = "0"
+    
+    return False

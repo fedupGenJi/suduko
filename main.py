@@ -17,6 +17,11 @@ def solveSudoku():
     board = data.get("board", [])
     printBoard(board)
     emptyBoxes = countEmpty(board)
+    if(solver(board,emptyBoxes)):
+        print("Solved Board:")
+        printBoard(board)
+    else:
+        print("Could not solve")
 
 if __name__ == '__main__':
     sudukoSolver.run(host=ip_address, port=1001, debug=False)
